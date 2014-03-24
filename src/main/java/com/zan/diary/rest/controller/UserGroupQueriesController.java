@@ -2,7 +2,7 @@ package com.zan.diary.rest.controller;
 
 import com.zan.diary.events.user.*;
 import com.zan.diary.core.services.UserService;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestUser;
 import com.zan.diary.rest.domain.UserQuery;
 
 import org.slf4j.Logger;
@@ -31,12 +31,12 @@ public class UserGroupQueriesController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<User> getAllUsers(@RequestBody UserQuery userQuery, UriComponentsBuilder builder){
-        List<User> users = new ArrayList<User>();
+    public List<RestUser> getAllUsers(@RequestBody UserQuery userQuery, UriComponentsBuilder builder){
+        List<RestUser> users = new ArrayList<RestUser>();
         
         AllUsersEvent allUsersEvent = userService.requestAllUsers(new RequestAllUsersEvent(userQuery.getLoc()));
         for (UserDetails detail : allUsersEvent.getUserDetails()) {
-        	users.add(User.fromUserDetails(detail));
+        	users.add(RestUser.fromUserDetails(detail));
         }
         return users;
     }

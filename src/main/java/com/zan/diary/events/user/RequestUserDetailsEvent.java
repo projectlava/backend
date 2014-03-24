@@ -5,13 +5,13 @@ import java.util.UUID;
 import com.zan.diary.events.RequestReadEvent;
 
 public class RequestUserDetailsEvent extends RequestReadEvent {
-  private UUID id;
+  private long id;
 
-  public RequestUserDetailsEvent(UUID id) {
+  public RequestUserDetailsEvent(long id) {
     this.id = id;
   }
 
-  public UUID getId() {
+  public long getId() {
     return id;
   }
 }

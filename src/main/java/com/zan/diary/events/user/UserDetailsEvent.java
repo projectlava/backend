@@ -6,12 +6,12 @@ import java.util.UUID;
 import com.zan.diary.events.ReadEvent;
 
 public class UserDetailsEvent extends ReadEvent {
-  private UUID id;
+  private long id;
   private UserDetails userDetails;
 
   private UserDetailsEvent() {}
 
-  public UserDetailsEvent(UUID id, UserDetails userDetails) {
+  public UserDetailsEvent(long id, UserDetails userDetails) {
 	this.id = id;
     this.userDetails = userDetails;
   }
@@ -20,11 +20,11 @@ public class UserDetailsEvent extends ReadEvent {
     return userDetails;
   }
 
-  public UUID getid() {
+  public long getid() {
     return id;
   }
 
-  public static UserDetailsEvent notFound(UUID id) {
+  public static UserDetailsEvent notFound(long id) {
     UserDetailsEvent ev = new UserDetailsEvent();
     ev.id = id;
     ev.entityFound=false;

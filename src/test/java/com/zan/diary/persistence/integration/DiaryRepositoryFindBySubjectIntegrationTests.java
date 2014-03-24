@@ -2,7 +2,7 @@ package com.zan.diary.persistence.integration;
 
 
 import com.zan.diary.config.MongoConfiguration;
-import com.zan.diary.persistence.domain.Diary;
+import com.zan.diary.persistence.domain.PersistenceDiary;
 import com.zan.diary.persistence.repository.DiaryRepository;
 
 import org.junit.After;
@@ -47,7 +47,7 @@ public class DiaryRepositoryFindBySubjectIntegrationTests {
     diaryRepository.save(standardItem());
     diaryRepository.save(yunNan());
 
-    List<Diary> diaryItems = diaryRepository.findBySubject("travel");
+    List<PersistenceDiary> diaryItems = diaryRepository.findBySubject("travel");
 
     assertEquals(1, diaryItems.size());
   }

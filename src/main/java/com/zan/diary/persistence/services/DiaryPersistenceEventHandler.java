@@ -3,7 +3,7 @@ package com.zan.diary.persistence.services;
 import java.util.UUID;
 
 import com.zan.diary.events.diary.*;
-import com.zan.diary.persistence.domain.Diary;
+import com.zan.diary.persistence.domain.PersistenceDiary;
 import com.zan.diary.persistence.repository.DiaryRepository;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class DiaryPersistenceEventHandler implements DiaryPersistenceService {
 
   @Override
   public DiaryCreatedEvent createDiary(CreateDiaryEvent createDiaryEvent) {
-	  Diary diary = Diary.fromDiaryDetails(createDiaryEvent.getDetails());
+	  PersistenceDiary diary = PersistenceDiary.fromDiaryDetails(createDiaryEvent.getDetails());
 
 	  diary.setid(UUID.randomUUID());
 	  diary.setDateTimeOfCreation(new Date());
@@ -38,7 +38,7 @@ public class DiaryPersistenceEventHandler implements DiaryPersistenceService {
   @Override
   public DiaryDetailsEvent requestDiaryDetails(RequestDiaryDetailsEvent requestDiaryDetailsEvent) {
 
-    Diary diary = diaryRepository.findByid(requestDiaryDetailsEvent.getid());
+    PersistenceDiary diary = diaryRepository.findByid(requestDiaryDetailsEvent.getid());
 
     if (diary == null) {
       return DiaryDetailsEvent.notFound(requestDiaryDetailsEvent.getid());
@@ -51,13 +51,13 @@ public class DiaryPersistenceEventHandler implements DiaryPersistenceService {
 
   @Override
   public DiaryUpdatedEvent updateDiary(UpdateDiaryEvent updateDiaryEvent) {
-    Diary diary = diaryRepository.findByid(updateDiaryEvent.getid());
+    PersistenceDiary diary = diaryRepository.findByid(updateDiaryEvent.getid());
 
     if(diary == null) {
       return DiaryUpdatedEvent.notFound(updateDiaryEvent.getid());
     }
 
-    diary = Diary.fromDiaryDetails(updateDiaryEvent.getDetails());
+    diary = PersistenceDiary.fromDiaryDetails(updateDiaryEvent.getDetails());
     diary.setDateTimeOfModification(new Date());
     diary = diaryRepository.save(diary);
 
@@ -67,7 +67,7 @@ public class DiaryPersistenceEventHandler implements DiaryPersistenceService {
   @Override
   public DiaryDeletedEvent deleteDiary(DeleteDiaryEvent deleteDiaryEvent) {
 
-    Diary diary = diaryRepository.findByid(deleteDiaryEvent.getid());
+    PersistenceDiary diary = diaryRepository.findByid(deleteDiaryEvent.getid());
 
     if (diary == null) {
       return DiaryDeletedEvent.notFound(deleteDiaryEvent.getid());

@@ -1,7 +1,7 @@
 package com.zan.diary.rest.functional;
 
 import com.zan.diary.rest.controller.fixture.RestDataFixture;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestUser;
 
 import org.junit.Test;
 import org.springframework.http.*;
@@ -18,13 +18,13 @@ public class userTests {
   @Test
   public void thatUsersCanBeAddedAndQueried() {
 
-    ResponseEntity<User> entity = createUser();
+    ResponseEntity<RestUser> entity = createUser();
 
     String path = entity.getHeaders().getLocation().getPath();
 
     assertEquals(HttpStatus.CREATED, entity.getStatusCode());
     assertTrue(path.startsWith("/diary/users/"));
-    User user = entity.getBody();
+    RestUser user = entity.getBody();
 
     System.out.println ("The User ID is " + user.getId());
     System.out.println ("The Location is " + entity.getHeaders().getLocation());
@@ -51,9 +51,9 @@ public class userTests {
 
     RestTemplate template = new RestTemplate();
     try {
-      ResponseEntity<User> entity = template.postForEntity(
+      ResponseEntity<RestUser> entity = template.postForEntity(
           "http://localhost:8080/diary/users",
-          requestEntity, User.class);
+          requestEntity, RestUser.class);
 
       fail("Request Passed incorrectly with status " + entity.getStatusCode());
     } catch (HttpClientErrorException ex) {
@@ -61,21 +61,21 @@ public class userTests {
     }
   }
 
-  private ResponseEntity<User> getUser() {
+  private ResponseEntity<RestUser> getUser() {
 	  RestTemplate template = new RestTemplate();
 	  return template.getForEntity(
         "http://localhost:8080/diary/daniel",
-         User.class);
+         RestUser.class);
   }
   
-  private ResponseEntity<User> createUser() {
+  private ResponseEntity<RestUser> createUser() {
     HttpEntity<String> requestEntity = new HttpEntity<String>(
         RestDataFixture.standardUserJSON(),getHeaders("zan" + ":" + "diary"));
 
     RestTemplate template = new RestTemplate();
     return template.postForEntity(
         "http://localhost:8080/diary/users",
-        requestEntity, User.class);
+        requestEntity, RestUser.class);
   }
 
   static HttpHeaders getHeaders(String auth) {

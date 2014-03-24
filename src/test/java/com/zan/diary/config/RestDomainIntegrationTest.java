@@ -3,7 +3,7 @@ package com.zan.diary.config;
 import com.zan.diary.config.CoreConfig;
 import com.zan.diary.config.MVCConfig;
 import com.zan.diary.rest.controller.fixture.RestDataFixture;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestUser;
 
 import org.junit.Before;
 import org.junit.Test;

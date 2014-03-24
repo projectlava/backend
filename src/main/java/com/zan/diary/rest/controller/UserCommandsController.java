@@ -6,7 +6,7 @@ import com.zan.diary.events.user.UpdateUserEvent;
 import com.zan.diary.events.user.UserDetailsEvent;
 import com.zan.diary.events.user.UserUpdatedEvent;
 import com.zan.diary.core.services.UserService;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,36 +33,36 @@ public class UserCommandsController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+    public ResponseEntity<RestUser> createUser(@RequestBody RestUser user, UriComponentsBuilder builder) {
 
     	UserDetailsEvent userCreated = userService.createUser(new CreateUserEvent(user.toUserDetails()));
 
-        User newUser = User.fromUserDetails(userCreated.getUserDetails());        
+        RestUser newUser = RestUser.fromUserDetails(userCreated.getUserDetails());        
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
                 builder.path("/diary/users/{id}")
                         .buildAndExpand(userCreated.getid()).toUri());
 
-        return new ResponseEntity<User>(newUser, headers, HttpStatus.CREATED);
+        return new ResponseEntity<RestUser>(newUser, headers, HttpStatus.CREATED);
     }
 
    
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    public ResponseEntity<RestUser> updateUser(@RequestBody RestUser user) {
 
         UserUpdatedEvent updateUpdated = userService.updateUser(new UpdateUserEvent(user.toUserDetails()));
 
         if (!updateUpdated.isEntityFound()) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RestUser>(HttpStatus.NOT_FOUND);
         }
 
-        User updatedUser = User.fromUserDetails(updateUpdated.getUserDetails());
+        RestUser updatedUser = RestUser.fromUserDetails(updateUpdated.getUserDetails());
 
         if (updateUpdated.isUpdateCompleted()) {
-            return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
+            return new ResponseEntity<RestUser>(updatedUser, HttpStatus.OK);
         }
 
-        return new ResponseEntity<User>(updatedUser, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<RestUser>(updatedUser, HttpStatus.FORBIDDEN);
     }
 }

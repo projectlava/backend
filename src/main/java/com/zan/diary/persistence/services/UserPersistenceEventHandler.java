@@ -1,10 +1,11 @@
 package com.zan.diary.persistence.services;
 
 import com.zan.diary.events.user.*;
-import com.zan.diary.persistence.domain.User;
+import com.zan.diary.persistence.domain.PersistenceUser;
 import com.zan.diary.persistence.repository.UsersRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +19,11 @@ public class UserPersistenceEventHandler implements UserPersistenceService {
 
   @Override
   public AllUsersEvent requestUsersNearby(RequestAllUsersEvent requestAllUsersEvent) {
-    Iterable<User> users = usersRepository.findByloc(requestAllUsersEvent.getloc());
+    Iterable<PersistenceUser> users = usersRepository.findByloc(requestAllUsersEvent.getloc());
 
     List<UserDetails> details = new ArrayList<UserDetails>();
 
-    for(User item: users) {
+    for(PersistenceUser item: users) {
       details.add(item.toUserDetails());
     }
 
@@ -31,7 +32,7 @@ public class UserPersistenceEventHandler implements UserPersistenceService {
 
   @Override
   public UserDetailsEvent requestUserDetails(RequestUserDetailsEvent requestUserDetailsEvent) {
-	  User item = usersRepository.findByid(requestUserDetailsEvent.getId());
+	  PersistenceUser item = usersRepository.findByid(requestUserDetailsEvent.getId());
 
     if (item == null) {
       return UserDetailsEvent.notFound(requestUserDetailsEvent.getId());
@@ -44,8 +45,11 @@ public class UserPersistenceEventHandler implements UserPersistenceService {
 
   @Override
   public UserDetailsEvent createUser(CreateUserEvent createUserEvent) {
-	  User item = usersRepository.save(
-			  User.fromUserDetails(createUserEvent.getDetails()));
+	  
+	  createUserEvent.getDetails().setDateTimeOfCreation(new Date());
+	  
+	  PersistenceUser item = usersRepository.save(
+			  PersistenceUser.fromUserDetails(createUserEvent.getDetails()));
 
     return new UserDetailsEvent(
         item.getid(),
@@ -54,7 +58,7 @@ public class UserPersistenceEventHandler implements UserPersistenceService {
 
 @Override
 public UserUpdatedEvent updateUser(UpdateUserEvent updateUserEvent) {
-	User user = usersRepository.findByid(updateUserEvent.getid());
+	PersistenceUser user = usersRepository.findByid(updateUserEvent.getid());
 
     if(user == null) {
       return UserUpdatedEvent.notFound(updateUserEvent.getid());
@@ -68,10 +72,10 @@ public UserUpdatedEvent updateUser(UpdateUserEvent updateUserEvent) {
 @Override
 public UserDetailsEvent requestUserDetailsName(
 		RequestUserDetailsEventName requestUserDetailsEvent) {
-	User item = usersRepository.findByName(requestUserDetailsEvent.getName());
+	PersistenceUser item = usersRepository.findByName(requestUserDetailsEvent.getName());
 
 	if (item == null) {
-		return UserDetailsEvent.notFound(UUID.randomUUID());
+		return UserDetailsEvent.notFound(-1);
 	}
 
 	return new UserDetailsEvent(
@@ -81,7 +85,7 @@ public UserDetailsEvent requestUserDetailsName(
 
 @Override
 public boolean addDiary(String username, String diaryID) {
-	User item = usersRepository.findByName(username);
+	PersistenceUser item = usersRepository.findByName(username);
 
 	if(item == null) { return false;}
 

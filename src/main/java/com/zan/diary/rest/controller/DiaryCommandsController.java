@@ -10,8 +10,8 @@ import com.zan.diary.events.user.UserDetailsEvent;
 import com.zan.diary.events.user.UserUpdatedEvent;
 import com.zan.diary.core.services.DiaryService;
 import com.zan.diary.core.services.UserService;
-import com.zan.diary.rest.domain.Diary;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestDiary;
+import com.zan.diary.rest.domain.RestUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,17 +38,17 @@ public class DiaryCommandsController {
     private DiaryService diaryService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Diary> createUser(@RequestBody Diary diary, UriComponentsBuilder builder) {
+    public ResponseEntity<RestDiary> createUser(@RequestBody RestDiary diary, UriComponentsBuilder builder) {
 
     	DiaryCreatedEvent diaryCreated = diaryService.createDiary(new CreateDiaryEvent(diary.toDiaryDetails()));
 
-    	Diary newDiary = Diary.fromDiaryDetails(diaryCreated.getDiaryDetails());
+    	RestDiary newDiary = RestDiary.fromDiaryDetails(diaryCreated.getDiaryDetails());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
                 builder.path("/diary/diaries/{id}")
                         .buildAndExpand(diaryCreated.getNewDiaryid()).toUri());
 
-        return new ResponseEntity<Diary>(newDiary, headers, HttpStatus.CREATED);
+        return new ResponseEntity<RestDiary>(newDiary, headers, HttpStatus.CREATED);
     }
 }

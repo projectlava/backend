@@ -9,10 +9,10 @@ public class UserDetails {
 	private List<String> userDiaries; 
 	
 	  public UserDetails() {
-		  id = null;
+		  id = -1;
 	  }
 
-	  public UserDetails(UUID id) {
+	  public UserDetails(long id) {
 	    this.id = id;
 	  }
 	
@@ -24,10 +24,10 @@ public class UserDetails {
 		this.userDiaries = userDiaries;
 	}
 
-	private UUID id;
+	private long id;
 
-	public void setid(UUID id) { this.id = id;}
-	public UUID getid() {  return id;  }
+	public void setid(long id) { this.id = id;}
+	public long getid() {  return id;  }
 
 	private String name;
 

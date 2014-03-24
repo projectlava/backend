@@ -2,7 +2,7 @@ package com.zan.diary.persistence.integration;
 
 
 import com.zan.diary.config.JPAConfiguration;
-import com.zan.diary.persistence.domain.User;
+import com.zan.diary.persistence.domain.PersistenceUser;
 import com.zan.diary.persistence.domain.fixture.PersistenceFixture;
 import com.zan.diary.persistence.repository.UsersRepository;
 
@@ -47,14 +47,14 @@ public class UsersRepositoryFindUsersContainingTests {
     usersRepository.save(PersistenceFixture.nastyUser());
     usersRepository.save(PersistenceFixture.niceUser());
     
-    Iterable<User> allusers = usersRepository.findAll();
+    Iterable<PersistenceUser> allusers = usersRepository.findAll();
     
-    List<User> retrievedUsers = usersRepository.findByloc("15213");
+    List<PersistenceUser> retrievedUsers = usersRepository.findByloc("15213");
 
     assertNotNull(retrievedUsers);
     assertEquals(2, retrievedUsers.size());
 
-    User usr = usersRepository.findByName("nasty");
+    PersistenceUser usr = usersRepository.findByName("nasty");
 
     assertNotNull(usr);
   }

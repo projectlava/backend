@@ -2,7 +2,7 @@ package com.zan.diary.rest.functional;
 
 
 import com.zan.diary.rest.controller.fixture.RestDataFixture;
-import com.zan.diary.rest.domain.Diary;
+import com.zan.diary.rest.domain.RestDiary;
 
 import org.junit.Test;
 import org.springframework.http.*;
@@ -19,13 +19,13 @@ public class diaryTests {
   @Test
   public void thatDiaryCanBeAddedAndQueried() {
 
-    ResponseEntity<Diary> entity = createDiary();
+    ResponseEntity<RestDiary> entity = createDiary();
 
     String path = entity.getHeaders().getLocation().getPath();
 
     assertEquals(HttpStatus.CREATED, entity.getStatusCode());
     assertTrue(path.startsWith("/diary/diaries"));
-    Diary diary = entity.getBody();
+    RestDiary diary = entity.getBody();
 
     System.out.println ("The User ID is " + diary.getId());
     System.out.println ("The Location is " + entity.getHeaders().getLocation());
@@ -40,9 +40,9 @@ public class diaryTests {
 
     RestTemplate template = new RestTemplate();
     try {
-      ResponseEntity<Diary> entity = template.postForEntity(
+      ResponseEntity<RestDiary> entity = template.postForEntity(
           "http://localhost:8080/diary/users",
-          requestEntity, Diary.class);
+          requestEntity, RestDiary.class);
 
       fail("Request Passed incorrectly with status " + entity.getStatusCode());
     } catch (HttpClientErrorException ex) {
@@ -50,14 +50,14 @@ public class diaryTests {
     }
   }
 
-  private ResponseEntity<Diary> createDiary() {
+  private ResponseEntity<RestDiary> createDiary() {
     HttpEntity<String> requestEntity = new HttpEntity<String>(
         RestDataFixture.standardDiaryJSON(),getHeaders("zan" + ":" + "diary"));
 
     RestTemplate template = new RestTemplate();
     return template.postForEntity(
         "http://localhost:8080/diary/diaries",
-        requestEntity, Diary.class);
+        requestEntity, RestDiary.class);
   }
 
   static HttpHeaders getHeaders(String auth) {

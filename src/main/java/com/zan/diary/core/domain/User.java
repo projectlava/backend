@@ -12,7 +12,7 @@ public class User {
 
 	private Date dateTimeOfCreation;
 	private List<String> userDiaries; 
-	private UUID id;
+	private long id;
 	private String name;
 	private String loc;
 	private String pass;
@@ -20,8 +20,8 @@ public class User {
 
 	public void setDateTimeOfCreation(Date dateTimeOfCreation) {this.dateTimeOfCreation = dateTimeOfCreation;	}
 	public Date getDateTimeOfCreation() {	return dateTimeOfCreation;	}
-	public void setid(UUID id) { this.id = id;}
-	public UUID getid() {  return id;  }
+	public void setid(long id) { this.id = id;}
+	public long getid() {  return id;  }
 	public void setName(String name) { this.name = name;}
 	public String getName() {  return name;  }
 	public void setLoc(String loc) { this.loc = loc;}

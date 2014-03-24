@@ -2,7 +2,7 @@ package com.zan.diary.rest.controller;
 
 import com.zan.diary.events.user.*;
 import com.zan.diary.core.services.UserService;
-import com.zan.diary.rest.domain.User;
+import com.zan.diary.rest.domain.RestUser;
 import com.zan.diary.rest.domain.UserQuery;
 
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class UserSingleQueriesController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> getUser(@RequestBody UserQuery userQuery, UriComponentsBuilder builder) {   	
+    public ResponseEntity<RestUser> getUser(@RequestBody UserQuery userQuery, UriComponentsBuilder builder) {   	
     	
     	UserDetailsEvent details = userService.requestUserDetailsName(new RequestUserDetailsEventName(userQuery.getName()));
 
@@ -46,20 +46,20 @@ public class UserSingleQueriesController {
     	} 
     	
     	if(!safe) {
-    		return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+    		return new ResponseEntity<RestUser>(HttpStatus.FORBIDDEN);
     	}
     	
         if (!details.isEntityFound()) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RestUser>(HttpStatus.NOT_FOUND);
         }
 
-        User user = User.fromUserDetails(details.getUserDetails());  
+        RestUser user = RestUser.fromUserDetails(details.getUserDetails());  
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
                 builder.path("/diary/users/{id}")
                         .buildAndExpand(details.getid()).toUri());
 
-        return new ResponseEntity<User>(user, headers, HttpStatus.OK);
+        return new ResponseEntity<RestUser>(user, headers, HttpStatus.OK);
     }
 }
