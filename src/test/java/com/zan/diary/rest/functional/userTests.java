@@ -26,7 +26,6 @@ public class userTests {
     assertTrue(path.startsWith("/diary/users/"));
     RestUser user = entity.getBody();
 
-    System.out.println ("The User ID is " + user.getId());
     System.out.println ("The Location is " + entity.getHeaders().getLocation());
 
   }
@@ -59,7 +58,7 @@ public class userTests {
   
   private ResponseEntity<RestUser> createUser() {
     HttpEntity<String> requestEntity = new HttpEntity<String>(
-        RestDataFixture.standardUserJSON(),getHeaders("zan" + ":" + "diary"));
+        RestDataFixture.standardUser1JSON(),getHeaders("zan" + ":" + "diary"));
 
     RestTemplate template = new RestTemplate();
     return template.postForEntity(
