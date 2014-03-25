@@ -31,6 +31,7 @@ public class CoreConfig {
 	  return new UserPersistenceEventHandler(usersRepository);
   }
   
+  
   @Bean
   public DiaryService createDiaryService(DiaryPersistenceService diaryPersistenceService) {
     return new DiaryEventHandler(diaryPersistenceService);

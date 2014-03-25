@@ -37,8 +37,7 @@ public class UsersRepositoryFindUsersContainingTests {
   @Autowired
   UsersRepository usersRepository;
 
-  @Autowired
-  EntityManager entityManager;
+
 
   @Test
   public void thatSearchingForOrdesContainingWorks() throws Exception {

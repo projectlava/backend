@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "ZAN_USERS")
+@Entity(name = "ZAN_DIARY_USERS")
 public class PersistenceUser {
 	
   @Id

@@ -29,17 +29,6 @@ public class userTests {
     System.out.println ("The User ID is " + user.getId());
     System.out.println ("The Location is " + entity.getHeaders().getLocation());
 
-    
-    entity = getUser();
-
-    path = entity.getHeaders().getLocation().getPath();
-
-    assertEquals(HttpStatus.CREATED, entity.getStatusCode());
-    assertTrue(path.startsWith("/diary/users/"));
-    user = entity.getBody();
-
-    System.out.println ("The User ID is " + user.getId());
-    System.out.println ("The Location is " + entity.getHeaders().getLocation());
   }
 
   @Test
@@ -52,7 +41,7 @@ public class userTests {
     RestTemplate template = new RestTemplate();
     try {
       ResponseEntity<RestUser> entity = template.postForEntity(
-          "http://localhost:8080/diary/users",
+          "http://54.84.235.82:8080/diary/users",
           requestEntity, RestUser.class);
 
       fail("Request Passed incorrectly with status " + entity.getStatusCode());
@@ -64,7 +53,7 @@ public class userTests {
   private ResponseEntity<RestUser> getUser() {
 	  RestTemplate template = new RestTemplate();
 	  return template.getForEntity(
-        "http://localhost:8080/diary/daniel",
+        "http://54.84.235.82:8080/diary/daniel",
          RestUser.class);
   }
   
@@ -74,7 +63,7 @@ public class userTests {
 
     RestTemplate template = new RestTemplate();
     return template.postForEntity(
-        "http://localhost:8080/diary/users",
+        "http://54.84.235.82:8080/diary/users",
         requestEntity, RestUser.class);
   }
 
